@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import classnames from 'classnames';
 
+import * as actions from '../actions';
 import Bookmark from './Bookmark';
 
 class Folder extends Component {
@@ -29,8 +32,9 @@ class Folder extends Component {
   }
 
   onDragStart(e) {
-    console.log('onDragStart');
+    e.dataTransfer.setData('dragStartId', e.target.id);
     this.setState({ onDragStart: true });
+    console.log('onDragStart id=' + e.target.id);
   }
 
   onDragEnter(e) {
@@ -54,8 +58,11 @@ class Folder extends Component {
   onDrop(e) {
     e.stopPropagation();
     e.preventDefault();
-    console.log('onDrop');
     this.setState({ onDragOver: false });
+    let fromId = e.dataTransfer.getData('dragStartId');
+    let toId = e.currentTarget.id;
+    console.log('onDrop from=' + fromId + ',to=' + toId);
+    this.props.actions.moveBookmark(fromId, toId);
   }
 
   getFolderClassName() {
@@ -69,13 +76,14 @@ class Folder extends Component {
   render() {
     const { id, name, children } = this.props;
     const { open } = this.state;
+    const checkId = id + '_check';
 
     return (
       <Wrapper>
-        <div className={this.getFolderClassName()} draggable="true" onDragStart={this.onDragStart} onDragEnter={this.onDragEnter}
+        <div id={id} className={this.getFolderClassName()} draggable="true" onDragStart={this.onDragStart} onDragEnter={this.onDragEnter}
          onDragOver={this.onDragOver} onDragLeave={this.onDragLeave} onDragEnd={this.onDragEnd} onDrop={this.onDrop} >
-          <input type="checkbox" id={id} checked={open} onChange={this.onCheckChange} className="folderCheck" />
-          <label htmlFor={id}>{name}</label>
+          <input type="checkbox" id={checkId} checked={open} onChange={this.onCheckChange} className="folderCheck" />
+          <label htmlFor={checkId}>{name}</label>
         </div>
         <div className="accordion" open={open}>
           {children.map((item, index) => (item.type == 'folder')
@@ -121,4 +129,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default Folder;
+export default connect(
+  (state, ownProps) => ({ bookmarks: state.bookmarks }),
+  (dispatch) => ({ actions: bindActionCreators(actions, dispatch) })
+)(Folder);

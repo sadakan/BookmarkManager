@@ -1,1 +1,1 @@
-export { BookmarkManager} from './BookmarkManager'
+export { BookmarkManager } from './BookmarkManager'

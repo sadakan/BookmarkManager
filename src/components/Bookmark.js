@@ -14,7 +14,6 @@ class Bookmark extends Component {
   }
 
   bindEvent() {
-    this.onCheckChange = this.onCheckChange.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnter = this.onDragEnter.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
@@ -26,14 +25,10 @@ class Bookmark extends Component {
   componentDidMount() {
   }
 
-  onCheckChange(e) {
-    this.setState({ open: !this.state.open });
-  }
-
   onDragStart(e) {
-    console.log('obDragStart');
     e.dataTransfer.setData('dragStartId', e.target.id);
     this.setState({ onDragStart: true });
+    console.log('onDragStart id=' + e.target.id);
   }
 
   onDragEnter(e) {
