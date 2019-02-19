@@ -1,6 +1,6 @@
 import * as actionTypes from '../utils/actionTypes';
 
-const initialAppState = {
+let initialBookmarks = {
   list: [
     { id: 0, type: 'folder', name: 'フォルダ1', children: [
       { id: 1, type: 'bookmark', name: 'なぜ、組織のつくりとソフトウェアアーキテクチャは似てしまうのか', url:'https://qiita.com/hirokidaichi/items/d12fcce80ee593bcf34d' },
@@ -18,12 +18,15 @@ const initialAppState = {
   ]
 };
 
-const bookmarks = (state = initialAppState, action) => {
+const bookmarks = (state = initialBookmarks, action) => {
   console.log(action);
   if (action.type === actionTypes.ADD_BOOKMARK) {
     return addBookmark(state.list, action.title, action.url);
   } else if (action.type === actionTypes.MOVE_BOOKMARK) {
     return moveBookmark(state.list, action.fromId, action.toId);
+  } else if (action.type === actionTypes.SET_BOOKMARK) {
+    console.log('set bookmarks');
+    return { list: [ ...action.bookmarks ] };
   } else {
     return state;
   }

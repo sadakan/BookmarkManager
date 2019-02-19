@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import * as actions from '../actions';
 import Bookmark from './Bookmark';
@@ -23,6 +24,18 @@ class BookmarkManagerComponent extends Component {
     this.setState({ url: e.target.value })
   }
 
+  getBookmarks() {
+    axios.get('http://localhost:3000/bookmark')
+    .then((results) => {
+      const bookmarks = results.data.message.list;
+      console.log(bookmarks);
+      this.props.actions.setBookmarks(bookmarks);
+    })
+    .catch(() => {
+      console.log('通信に失敗しました。');
+    });
+  }
+
   render() {
     const { actions, bookmarks } = this.props;
     const { title, url } = this.state;
@@ -38,6 +51,7 @@ class BookmarkManagerComponent extends Component {
           <input type="text" placeholder="title" value={title} onChange={this.inputTitle} />
           <input type="text" placeholder="url" value={url} onChange={this.inputUrl} />
           <input type="button" value="追加" onClick={() => actions.addBookmark(title, url)} />
+          <input type="button" value="reload" onClick={() => this.getBookmarks()} />
         </div>
       </div>
     )
@@ -48,10 +62,8 @@ const mapState = (state, ownProps) => ({
   bookmarks: state.bookmarks
 });
 
-function mapDispatch(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch),
-  };
-}
+const mapDispatch = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch),
+});
 
 export const BookmarkManager = connect(mapState, mapDispatch)(BookmarkManagerComponent);
