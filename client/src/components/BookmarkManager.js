@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 
 import * as actions from '../actions';
 import Bookmark from './Bookmark';
@@ -14,6 +15,7 @@ class BookmarkManagerComponent extends Component {
     this.state = { title: "", url: "" }
     this.inputTitle = this.inputTitle.bind(this);
     this.inputUrl = this.inputUrl.bind(this);
+    this.getBookmarks();
   }
 
   inputTitle(e) {
@@ -40,23 +42,48 @@ class BookmarkManagerComponent extends Component {
     const { actions, bookmarks } = this.props;
     const { title, url } = this.state;
     return (
-      <div>
-        <span>BookmarkManager</span>
-        {bookmarks.list.map((item, index) => (item.type == 'folder')
-          ? <Folder key={index} id={item.id} name={item.name} children={item.children} />
-          : <Bookmark key={index} id={item.id} name={item.name} url={item.url} />
-        )}
-        <Link to={"hello"}>hello</Link>
-        <div>
-          <input type="text" placeholder="title" value={title} onChange={this.inputTitle} />
-          <input type="text" placeholder="url" value={url} onChange={this.inputUrl} />
-          <input type="button" value="追加" onClick={() => actions.addBookmark(title, url)} />
-          <input type="button" value="reload" onClick={() => this.getBookmarks()} />
+      <Wrapper>
+        <div className="navbar">
+          <span className="home">ブックマーク</span>
         </div>
-      </div>
+        <div className="contents">
+          {bookmarks.list.map((item, index) => (item.type == 'folder')
+            ? <Folder key={index} id={item.id} name={item.name} children={item.children} />
+            : <Bookmark key={index} id={item.id} name={item.name} url={item.url} />
+          )}
+          <div>
+            <input type="text" placeholder="title" value={title} onChange={this.inputTitle} />
+            <input type="text" placeholder="url" value={url} onChange={this.inputUrl} />
+            <input type="button" value="追加" onClick={() => actions.addBookmark(title, url)} />
+            <input type="button" value="reload" onClick={() => this.getBookmarks()} />
+          </div>
+          <Link to={"hello"}>hello</Link>
+        </div>
+      </Wrapper>
     )
   }
 }
+
+const Wrapper = styled.div`
+  .navbar {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+    background-color: #4367d6;
+    color: #ffffff
+    display: flex;
+    align-items: center
+  }
+  .home {
+    padding-left: 10px;
+  }
+  .contents {
+    padding-top: 60px;
+    padding-left: 8px;
+  }
+`;
 
 const mapState = (state, ownProps) => ({
   bookmarks: state.bookmarks

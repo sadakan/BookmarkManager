@@ -87,6 +87,9 @@ const Wrapper = styled.div`
   .dragStart {
     opacity: 0.4;
   }
+  a {
+    color: #5a5a5a;
+  }
 `;
 
 export default connect(

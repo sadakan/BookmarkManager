@@ -1,0 +1,51 @@
+{
+  "list": [
+    { 
+      "type": "bookmark",
+      "name": "なぜ、組織のつくりとソフトウェアアーキテクチャは似てしまうのか",
+      "url": "https://qiita.com/hirokidaichi/items/d12fcce80ee593bcf34d"
+    },
+    {
+      "type": "bookmark",
+      "name": "WebブラウザでUnityで作ったシーンを歩き廻ろう！",
+      "url": "https://qiita.com/ChinatsuMatsumoto/items/c99457cc85318da892cb"
+    },
+    {
+      "type": "folder",
+      "name": "フォルダ2",
+      "children": [
+        {
+          "type": "bookmark",
+          "name": "AWSサービス一覧（2019/01版）",
+          "url": "https://qiita.com/moritalous/items/31a56acbf2ce367b712d"
+        }
+      ]
+    },
+    {
+      "type": "bookmark",
+      "name": "WebRTC利用でありがちな不満点とベストプラクティスの模索",
+      "url": "https://qiita.com/nakakura/items/50974e6622807a6dbc09"
+    },
+    {
+      "type": "bookmark",
+      "name": "Vue + Vue Router + Vuex + Laravel チュートリアル（全16回）を書きました。",
+      "url": "https://qiita.com/MasahiroHarada/items/2597bd6973a45f92e1e8"
+    },
+    {
+      "type": "folder",
+      "name": "フォルダ3",
+      "children": [
+        {
+          "type": "bookmark",
+          "name": "仕事で使えるかも知れないWindows コマンド＆ワンライナー集 + バッチファイル",
+          "url": "https://qiita.com/ryuichi1208/items/4bf20f702176101a3ecf"
+        }
+      ]
+    },
+    {
+      "type": "bookmark",
+      "name": "Haskellをかける少女",
+      "url": "https://qiita.com/jzmstrjp/items/11dcd3ec26027ff30214"
+    }
+  ]
+}
