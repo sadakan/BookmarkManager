@@ -39,11 +39,16 @@ Resources:
                 Variables:
                     BUCKET_NAME: 'bookmarkmanager'
             Events:
-                Bookmark:
+                GetBookmark:
                     Type: Api
-                    Properties:
+                    Properties: 
                         Path: /bookmark
                         Method: get
+                PostBookmark:
+                    Type: Api
+                    Properties: 
+                        Path: /bookmark
+                        Method: post
 
     BookmarkManageRole:
         Type: AWS::IAM::Role

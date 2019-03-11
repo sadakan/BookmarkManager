@@ -28,10 +28,20 @@ class BookmarkManagerComponent extends Component {
 
   getBookmarks() {
     axios.get('http://localhost:3000/bookmark')
-    .then((results) => {
-      const bookmarks = results.data.message.list;
+    .then((result) => {
+      const bookmarks = result.data.message.list;
       console.log(bookmarks);
       this.props.actions.setBookmarks(bookmarks);
+    })
+    .catch(() => {
+      console.log('通信に失敗しました。');
+    });
+  }
+
+  getBookmarks2() {
+    axios.post('http://localhost:3000/bookmark', new URLSearchParams())
+    .then((results) => {
+      console.log(result);
     })
     .catch(() => {
       console.log('通信に失敗しました。');
@@ -55,7 +65,7 @@ class BookmarkManagerComponent extends Component {
             <input type="text" placeholder="title" value={title} onChange={this.inputTitle} />
             <input type="text" placeholder="url" value={url} onChange={this.inputUrl} />
             <input type="button" value="追加" onClick={() => actions.addBookmark(title, url)} />
-            <input type="button" value="reload" onClick={() => this.getBookmarks()} />
+            <input type="button" value="reload" onClick={() => this.getBookmarks2()} />
           </div>
           <Link to={"hello"}>hello</Link>
         </div>
