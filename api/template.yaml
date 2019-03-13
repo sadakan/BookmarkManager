@@ -49,6 +49,11 @@ Resources:
                     Properties: 
                         Path: /bookmark
                         Method: post
+                OptionsBookmark:
+                    Type: Api
+                    Properties: 
+                        Path: /bookmark
+                        Method: options
 
     BookmarkManageRole:
         Type: AWS::IAM::Role
