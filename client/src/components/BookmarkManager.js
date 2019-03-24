@@ -45,11 +45,11 @@ class BookmarkManagerComponent extends Component {
       url: 'http://localhost:3000/bookmark',
       data: this.props.bookmarks 
     })
-    .then((results) => {
+    .then((result) => {
       console.log(result);
     })
     .catch(() => {
-      console.log('通信に失敗しました。');
+      console.log('POST通信に失敗しました。');
     });
   }
 
@@ -70,7 +70,7 @@ class BookmarkManagerComponent extends Component {
             <input type="text" placeholder="title" value={title} onChange={this.inputTitle} />
             <input type="text" placeholder="url" value={url} onChange={this.inputUrl} />
             <input type="button" value="追加" onClick={() => actions.addBookmark(title, url)} />
-            <input type="button" value="reload" onClick={() => this.postBookmarks()} />
+            <input type="button" value="保存" onClick={() => this.postBookmarks()} />
           </div>
           <Link to={"hello"}>hello</Link>
         </div>
@@ -97,6 +97,7 @@ const Wrapper = styled.div`
   .contents {
     padding-top: 60px;
     padding-left: 8px;
+    padding-right: 8px;
   }
 `;
 

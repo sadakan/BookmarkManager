@@ -10,9 +10,12 @@ const bookmarks = (state = initialBookmarks, action) => {
     return addBookmark(state.list, action.title, action.url);
   } else if (action.type === actionTypes.MOVE_BOOKMARK) {
     return moveBookmark(state.list, action.fromId, action.toId);
+  } else if (action.type === actionTypes.REMOVE_BOOKMARK) {
+    let list = removeBookmark(state.list, action.id);
+    return { list: [ ...list ] };
   } else if (action.type === actionTypes.SET_BOOKMARK) {
-    console.log('set bookmarks');
     let result = numberingBookmarkId(action.bookmarks, 0);
+    console.log(result);
     return { list: [ ...result.list ] };
   } else {
     return state;
@@ -29,7 +32,7 @@ const numberingBookmarkId = (list, maxId) => {
       maxId = result.maxId;
     }
     return e;
-  })
+  });
   return { list, maxId };
 }
 

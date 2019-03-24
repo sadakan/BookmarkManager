@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import classnames from 'classnames';
 
 import * as actions from '../actions';
+import DeleteLink from './DeleteLink';
 
 class Bookmark extends Component {
   constructor(props) {
     super(props);
-    this.state = { onDragStart: false, onDragOver: false }
+    this.state = { onDragStart: false, onDragOver: false, onMouseOver: false }
     this.bindEvent();
   }
 
@@ -20,6 +21,8 @@ class Bookmark extends Component {
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseOut = this.onMouseOut.bind(this);
   }
 
   componentDidMount() {
@@ -59,6 +62,14 @@ class Bookmark extends Component {
     this.props.actions.moveBookmark(fromId, toId);
   }
 
+  onMouseOver(e) {
+    this.setState({ onMouseOver: true });
+  }
+
+  onMouseOut(e) {
+    this.setState({ onMouseOver: false });
+  }
+
   getClassName() {
     return classnames(
       {'dragStart': this.state.onDragStart},
@@ -68,12 +79,18 @@ class Bookmark extends Component {
 
   render() {
     const { id, name, url } = this.props;
+    const { onDragOver, onMouseOver } = this.state;
 
     return (
       <Wrapper>
-        <div id={id} className={this.getClassName()} draggable="true" onDragStart={this.onDragStart} onDragEnter={this.onDragEnter}
-           onDragOver={this.onDragOver} onDragLeave={this.onDragLeave} onDragEnd={this.onDragEnd} onDrop={this.onDrop}>
-          <li><a href={url} target="_blank">{name}</a></li>
+        <div id={id} className={this.getClassName()} draggable="true"
+           onDragStart={this.onDragStart} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver}
+           onDragLeave={this.onDragLeave} onDragEnd={this.onDragEnd} onDrop={this.onDrop}
+           onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+          <li>
+            <a href={url} target="_blank">{name}</a>
+            <DeleteLink bookmarkId={id} hover={onMouseOver ? 'true' : ''} />
+          </li>
         </div>
       </Wrapper>
     );
