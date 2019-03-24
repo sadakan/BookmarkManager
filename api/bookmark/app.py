@@ -20,7 +20,8 @@ def lambda_handler(event, context):
         body = json.dumps({ "message": bookmarkList })
     elif httpMethod == 'POST':
         params = json.loads(event['body'])
-        logger.info(params['list'])
+        logger.info(params)
+        s3.put_object(Bucket=bucketName, Key='bookmarkList.json', Body=event['body'])
         body = 'post'
     return {
         "statusCode": 200,
