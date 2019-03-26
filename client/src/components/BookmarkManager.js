@@ -15,7 +15,7 @@ class BookmarkManagerComponent extends Component {
     this.state = { title: "", url: "" }
     this.inputTitle = this.inputTitle.bind(this);
     this.inputUrl = this.inputUrl.bind(this);
-    this.getBookmarks();
+    this.getBookmarkList();
   }
 
   inputTitle(e) {
@@ -26,24 +26,35 @@ class BookmarkManagerComponent extends Component {
     this.setState({ url: e.target.value })
   }
 
-  getBookmarks() {
+  getBookmarkList() {
     axios.get('http://localhost:3000/bookmark')
     .then((result) => {
-      const bookmarks = result.data.message.list;
-      console.log(bookmarks);
-      this.props.actions.setBookmarks(bookmarks);
+      const bookmarkList = result.data.message.list;
+      console.log(bookmarkList);
+      this.props.actions.updateBookmarkList(bookmarkList);
     })
     .catch(() => {
       console.log('通信に失敗しました。');
     });
   }
 
-  postBookmarks() {
+  addButtonOnClick() {
+    const { title, url } = this.state;
+    if (title != null && title.length > 0) {
+      if (url != null && url.length > 0) {
+        this.props.actions.addBookmark(title, url);
+      } else {
+        this.props.actions.addFolder(title);
+      }
+    }
+  }
+
+  postBookmarkList() {
     axios({
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       url: 'http://localhost:3000/bookmark',
-      data: this.props.bookmarks 
+      data: this.props.stateBookmarks
     })
     .then((result) => {
       console.log(result);
@@ -54,7 +65,7 @@ class BookmarkManagerComponent extends Component {
   }
 
   render() {
-    const { actions, bookmarks } = this.props;
+    const { actions, stateBookmarks } = this.props;
     const { title, url } = this.state;
     return (
       <Wrapper>
@@ -62,15 +73,15 @@ class BookmarkManagerComponent extends Component {
           <span className="home">ブックマーク</span>
         </div>
         <div className="contents">
-          {bookmarks.list.map((item, index) => (item.type == 'folder')
+          {stateBookmarks.list.map((item, index) => (item.type == 'folder')
             ? <Folder key={index} id={item.id} name={item.name} children={item.children} />
             : <Bookmark key={index} id={item.id} name={item.name} url={item.url} />
           )}
           <div>
             <input type="text" placeholder="title" value={title} onChange={this.inputTitle} />
             <input type="text" placeholder="url" value={url} onChange={this.inputUrl} />
-            <input type="button" value="追加" onClick={() => actions.addBookmark(title, url)} />
-            <input type="button" value="保存" onClick={() => this.postBookmarks()} />
+            <input type="button" value="追加" onClick={() => this.addButtonOnClick()} />
+            <input type="button" value="保存" onClick={() => this.postBookmarkList()} />
           </div>
           <Link to={"hello"}>hello</Link>
         </div>
@@ -102,7 +113,7 @@ const Wrapper = styled.div`
 `;
 
 const mapState = (state, ownProps) => ({
-  bookmarks: state.bookmarks
+  stateBookmarks: state.bookmarks
 });
 
 const mapDispatch = (dispatch) => ({

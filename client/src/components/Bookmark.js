@@ -29,9 +29,10 @@ class Bookmark extends Component {
   }
 
   onDragStart(e) {
-    e.dataTransfer.setData('dragStartId', e.target.id);
+    e.dataTransfer.setData('id', e.target.id);
+    e.dataTransfer.setData('type', 'bookmark');
     this.setState({ onDragStart: true });
-    console.log('onDragStart id=' + e.target.id);
+    console.log('onDragStart id=' + e.target.id + ',type=' + e.target.type);
   }
 
   onDragEnter(e) {
@@ -56,10 +57,15 @@ class Bookmark extends Component {
     e.stopPropagation();
     e.preventDefault();
     this.setState({ onDragOver: false });
-    let fromId = e.dataTransfer.getData('dragStartId');
+    let fromId = e.dataTransfer.getData('id');
+    let fromType = e.dataTransfer.getData('type');
     let toId = e.currentTarget.id;
-    console.log('onDrop from=' + fromId + ',to=' + toId);
-    this.props.actions.moveBookmark(fromId, toId);
+    console.log('onDrop from[id:' + fromId + ',type:' + fromType + '], to[id' + toId + ',type:bookmark]');
+    if (fromType === 'bookmark') {
+      this.props.actions.moveBookmark(fromId, toId);
+    } else {
+      this.props.actions.moveFolder(fromId, toId);
+    }
   }
 
   onMouseOver(e) {
