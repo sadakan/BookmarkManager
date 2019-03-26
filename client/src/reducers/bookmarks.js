@@ -1,4 +1,11 @@
-import * as actionTypes from '../utils/actionTypes';
+// import * as actionTypes from '../utils/actionTypes';
+
+export const actionTypes = {
+  SET_BOOKMARK: 'SET_BOOKMARK',
+  ADD_BOOKMARK: 'ADD_BOOKMARK',
+  MOVE_BOOKMARK: 'MOVE_BOOKMARK',
+  REMOVE_BOOKMARK: 'REMOVE_BOOKMARK'
+}
 
 let initialBookmarks = { list: [] };
 
