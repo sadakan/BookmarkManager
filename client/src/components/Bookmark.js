@@ -104,6 +104,15 @@ const Wrapper = styled.div`
   .dragStart {
     opacity: 0.4;
   }
+  li {
+    list-style-type: none;
+  }
+  li:before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+    content: '\f15b';
+    padding-right: 8px;
+  }
   a {
     color: #5a5a5a;
   }

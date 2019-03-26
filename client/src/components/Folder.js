@@ -109,11 +109,11 @@ const Wrapper = styled.div`
   input[type="checkbox"] + label:before {
     font-family: 'Font Awesome 5 Free';
     font-weight: bold;
-    content: '\f105';
+    content: '\f07b';
     padding-right: 8px;
   }
   input[type="checkbox"]:checked + label:before {
-    content: '\f107';
+    content: '\f07c';
   }
   .accordion {
     // padding-left: ${props => props.ggg ? 3 : 0}em;

@@ -1,8 +1,6 @@
 import * as actionTypes from '../utils/actionTypes';
 
-let initialBookmarks = {
-  list: []
-};
+let initialBookmarks = { list: [] };
 
 const bookmarks = (state = initialBookmarks, action) => {
   console.log(action);
@@ -22,6 +20,19 @@ const bookmarks = (state = initialBookmarks, action) => {
   }
 };
 
+// ブックマークを追加
+const addBookmark = (currentBookmarkList, title, url) => {
+  let addItem;
+  if (title != null && title.length > 0) {
+    // タイトルのみ入力の場合フォルダ追加
+    addItem = (url != null && url.length > 0)
+      ? { id: getMaxId(currentBookmarkList) + 1, type: 'bookmark', name: title, url: url }
+      : { id: getMaxId(currentBookmarkList) + 1, type: 'folder', name: title, children: [] };
+    return { list: [ ...currentBookmarkList, addItem ] };
+  }
+  return { list: currentBookmarkList };
+}
+
 // 全ブックマークにIDを採番
 const numberingBookmarkId = (list, maxId) => {
   list.map((e) => {
@@ -34,16 +45,6 @@ const numberingBookmarkId = (list, maxId) => {
     return e;
   });
   return { list, maxId };
-}
-
-// ブックマークを追加
-const addBookmark = (list, title, url) => {
-  return {
-    list: [
-      ...list,
-      { id: getMaxId(list) + 1, type: 'bookmark', name: title, url: url }
-    ]
-  };
 }
 
 // ブックマークリスト中の最大IDを取得
