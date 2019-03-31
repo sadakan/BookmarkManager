@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import * as actions from '../actions';
 import Bookmark from './Bookmark';
 import Folder from './Folder';
+import NavBar from './NavBar';
 
 class BookmarkManagerComponent extends Component {
   constructor(props) {
@@ -69,9 +70,7 @@ class BookmarkManagerComponent extends Component {
     const { title, url } = this.state;
     return (
       <Wrapper>
-        <div className="navbar">
-          <span className="home">ブックマーク</span>
-        </div>
+        <NavBar />
         <div className="contents">
           {stateBookmarks.list.map((item, index) => (item.type == 'folder')
             ? <Folder key={index} id={item.id} name={item.name} children={item.children} />
@@ -91,20 +90,6 @@ class BookmarkManagerComponent extends Component {
 }
 
 const Wrapper = styled.div`
-  .navbar {
-    top: 0;
-    position: fixed;
-    width: 100%;
-    height: 50px;
-    z-index: 1;
-    background-color: #4367d6;
-    color: #ffffff
-    display: flex;
-    align-items: center
-  }
-  .home {
-    padding-left: 10px;
-  }
   .contents {
     padding-top: 60px;
     padding-left: 8px;
