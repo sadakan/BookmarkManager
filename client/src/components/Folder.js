@@ -6,11 +6,12 @@ import classnames from 'classnames';
 
 import * as actions from '../actions';
 import Bookmark from './Bookmark';
+import DeleteLink from './DeleteLink';
 
 class Folder extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, onDragStart: false, onDragOver: false }
+    this.state = { open: false, onDragStart: false, onDragOver: false, onMouseOver: false }
     this.bindEvent();
   }
 
@@ -22,6 +23,8 @@ class Folder extends Component {
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseOut = this.onMouseOut.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +73,13 @@ class Folder extends Component {
       this.props.actions.moveFolderToFolder(fromId, toId);
     }
   }
+  onMouseOver(e) {
+    this.setState({ onMouseOver: true });
+  }
+
+  onMouseOut(e) {
+    this.setState({ onMouseOver: false });
+  }
 
   getFolderClassName() {
     return classnames(
@@ -81,15 +91,20 @@ class Folder extends Component {
 
   render() {
     const { id, name, children } = this.props;
-    const { open } = this.state;
+    const { open, onMouseOver } = this.state;
     const checkId = id + '_check';
 
     return (
       <Wrapper>
-        <div id={id} className={this.getFolderClassName()} draggable="true" onDragStart={this.onDragStart} onDragEnter={this.onDragEnter}
-         onDragOver={this.onDragOver} onDragLeave={this.onDragLeave} onDragEnd={this.onDragEnd} onDrop={this.onDrop} >
-          <input type="checkbox" id={checkId} checked={open} onChange={this.onCheckChange} className="folderCheck" />
-          <label htmlFor={checkId}>{name}</label>
+        <div id={id} className={this.getFolderClassName()} draggable="true"
+          onDragStart={this.onDragStart} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver}
+          onDragLeave={this.onDragLeave} onDragEnd={this.onDragEnd} onDrop={this.onDrop}
+          onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} >
+          <li>
+            <input type="checkbox" id={checkId} checked={open} onChange={this.onCheckChange} className="folderCheck" />
+            <label htmlFor={checkId}>{name}</label>
+            <DeleteLink bookmarkId={id} hover={onMouseOver ? 'true' : ''} />
+          </li>
         </div>
         <div className="accordion" open={open}>
           {children.map((item, index) => (item.type == 'folder')
@@ -109,6 +124,9 @@ const Wrapper = styled.div`
   .dragStart {
     opacity: 0.4;
   }
+  li {
+    list-style-type: none;
+  }
   input[type="checkbox"] {
     display: none;
   }
@@ -122,7 +140,6 @@ const Wrapper = styled.div`
     content: '\f07c';
   }
   .accordion {
-    // padding-left: ${props => props.ggg ? 3 : 0}em;
     padding-left: 2em;
     opacity: 0;
     max-height: 0px;
