@@ -105,7 +105,7 @@ class Bookmark extends Component {
 
 const Wrapper = styled.div`
   .dragOver {
-    border: 2px dashed #000;
+    border: 2px dashed rgb(0,0,0);
   }
   .dragStart {
     opacity: 0.4;
@@ -120,7 +120,7 @@ const Wrapper = styled.div`
     padding-right: 8px;
   }
   a {
-    color: #5a5a5a;
+    color: rgb(90,90,90);
   }
 `;
 

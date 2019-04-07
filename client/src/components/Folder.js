@@ -104,7 +104,7 @@ class Folder extends Component {
 
 const Wrapper = styled.div`
   .dragOver {
-    border: 2px dashed #000;
+    border: 2px dashed rgb(0,0,0);
   }
   .dragStart {
     opacity: 0.4;
