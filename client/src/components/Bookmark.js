@@ -10,17 +10,22 @@ import DeleteLink from './DeleteLink';
 class Bookmark extends Component {
   constructor(props) {
     super(props);
-    this.state = { onDragStart: false, onDragOver: false, onMouseOver: false }
+    this.state = {
+      onDragStart: false, onDragOverUpper: false, onDragOverLower: false, onMouseOver: false,
+    }
     this.bindEvent();
   }
 
   bindEvent() {
     this.onDragStart = this.onDragStart.bind(this);
-    this.onDragEnter = this.onDragEnter.bind(this);
-    this.onDragOver = this.onDragOver.bind(this);
-    this.onDragLeave = this.onDragLeave.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.onDragEnterUpper = this.onDragEnterUpper.bind(this);
+    this.onDragOverUpper = this.onDragOverUpper.bind(this);
+    this.onDragLeaveUpper = this.onDragLeaveUpper.bind(this);
+    this.onDragEnterLower = this.onDragEnterLower.bind(this);
+    this.onDragOverLower = this.onDragOverLower.bind(this);
+    this.onDragLeaveLower = this.onDragLeaveLower.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
   }
@@ -35,19 +40,6 @@ class Bookmark extends Component {
     console.log('onDragStart id=' + e.target.id + ',type=' + e.target.type);
   }
 
-  onDragEnter(e) {
-    this.setState({ onDragOver: true });
-  }
-
-  onDragOver(e) {
-    e.stopPropagation(); // defaultで現在のドラッグイベントを初期化？するらしい。
-    e.preventDefault();  // 故に無効化しないとdropイベントが発火しない。でもdragEndは発火する。よく分からない。
-  }
-
-  onDragLeave(e) {
-    this.setState({ onDragOver: false });
-  }
-
   onDragEnd(e) {
     console.log('onDragEnd');
     this.setState({ onDragStart: false });
@@ -56,16 +48,49 @@ class Bookmark extends Component {
   onDrop(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.setState({ onDragOver: false });
     let fromId = e.dataTransfer.getData('id');
     let fromType = e.dataTransfer.getData('type');
     let toId = e.currentTarget.id;
+    let toUpper = this.state.onDragOverUpper;
+    let toLower = this.state.onDragOverLower;
+    this.setState({ onDragOverUpper: false });
+    this.setState({ onDragOverLower: false });
     console.log('onDrop from[id:' + fromId + ',type:' + fromType + '], to[id' + toId + ',type:bookmark]');
     if (fromType === 'bookmark') {
-      this.props.actions.moveBookmark(fromId, toId);
+      if (toUpper) {
+        this.props.actions.moveBookmarkToBefore(fromId, toId);
+      } else {
+        this.props.actions.moveBookmarkToAfter(fromId, toId);
+      }
     } else {
       this.props.actions.moveFolder(fromId, toId);
     }
+  }
+
+  onDragEnterUpper(e) {
+    this.setState({ onDragOverUpper: true });
+  }
+
+  onDragEnterLower(e) {
+    this.setState({ onDragOverLower: true });
+  }
+
+  onDragOverUpper(e) {
+    e.stopPropagation(); // defaultで現在のドラッグイベントを初期化？するらしい。
+    e.preventDefault();  // 故に無効化しないとdropイベントが発火しない。でもdragEndは発火する。よく分からない。
+  }
+
+  onDragOverLower(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  onDragLeaveUpper(e) {
+    this.setState({ onDragOverUpper: false });
+  }
+
+  onDragLeaveLower(e) {
+    this.setState({ onDragOverLower: false });
   }
 
   onMouseOver(e) {
@@ -78,25 +103,31 @@ class Bookmark extends Component {
 
   getClassName() {
     return classnames(
-      {'dragStart': this.state.onDragStart},
-      {'dragOver': this.state.onDragOver}
+      'bookmark',
+      { 'dragStart': this.state.onDragStart },
+      { 'dragOverUpper': this.state.onDragOverUpper },
+      { 'dragOverLower': this.state.onDragOverLower },
+      { 'mouseOver': this.state.onMouseOver },
     );
   }
 
   render() {
     const { id, name, url } = this.props;
-    const { onDragOver, onMouseOver } = this.state;
+    const { onMouseOver } = this.state;
 
     return (
       <Wrapper>
         <div id={id} className={this.getClassName()} draggable="true"
-           onDragStart={this.onDragStart} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver}
-           onDragLeave={this.onDragLeave} onDragEnd={this.onDragEnd} onDrop={this.onDrop}
-           onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+          onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} onDrop={this.onDrop}
+          onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} >
           <li>
             <a href={url} target="_blank">{name}</a>
             <DeleteLink bookmarkId={id} hover={onMouseOver ? 'true' : ''} />
           </li>
+          <div className="background upperHalf"
+            onDragEnter={this.onDragEnterUpper} onDragOver={this.onDragOverUpper} onDragLeave={this.onDragLeaveUpper} />
+          <div className="background lowerHalf"
+            onDragEnter={this.onDragEnterLower} onDragOver={this.onDragOverLower} onDragLeave={this.onDragLeaveLower} />
         </div>
       </Wrapper>
     );
@@ -104,6 +135,9 @@ class Bookmark extends Component {
 }
 
 const Wrapper = styled.div`
+  .bookmark {
+    position: relative;
+  }
   .dragOver {
     border: 2px dashed rgb(0,0,0);
   }
@@ -121,6 +155,24 @@ const Wrapper = styled.div`
   }
   a {
     color: rgb(90,90,90);
+  }
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    // z-index: -1;
+  }
+  .background.upperHalf {
+    top: 0px;
+  }
+  .background.lowerHalf {
+    bottom: 0px;
+  }
+  .dragOverUpper > .background.upperHalf {
+    border-top: solid 1px #00f;
+  }
+  .dragOverLower > .background.lowerHalf {
+    border-bottom: solid 1px #00f
   }
 `;
 

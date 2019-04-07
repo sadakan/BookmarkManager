@@ -12,6 +12,11 @@ export const actionTypes = {
   REMOVE_FOLDER:           'REMOVE_FOLDER',
 }
 
+export const movePositions = {
+  MOVE_TO_BEFORE: 'MOVE_TO_BEFORE',
+  MOVE_TO_AFTER:  'MOVE_TO_AFTER',
+}
+
 let initialBookmarks = { list: [] };
 
 const bookmarks = (state = initialBookmarks, action) => {
@@ -23,7 +28,7 @@ const bookmarks = (state = initialBookmarks, action) => {
   } else if (action.type === actionTypes.ADD_FOLDER) {
     return addFolder(state.list, action.title);
   } else if (action.type === actionTypes.MOVE_BOOKMARK) {
-    return moveBookmark(state.list, action.fromId, action.toId);
+    return moveBookmark(state.list, action.fromId, action.toId, action.movePosition);
   } else if (action.type === actionTypes.MOVE_FOLDER) {
     return moveFolder(state.list, action.fromId, action.toId);
   } else if (action.type === actionTypes.MOVE_BOOKMARK_TO_FOLDER) {
@@ -57,11 +62,13 @@ const addFolder = (bookmarkList, title) => {
 }
 
 // ブックマークを移動
-const moveBookmark = (bookmarkList, fromId, toId) => {
+const moveBookmark = (bookmarkList, fromId, toId, movePosition) => {
   let resultList = bookmarkList;
   const bookmark = sub.getItemById(resultList, fromId);
   resultList = sub.removeItem(resultList, fromId);
-  resultList = sub.insertItemBefore(resultList, bookmark, toId);
+  resultList = ((movePosition === movePositions.MOVE_TO_BEFORE)) 
+                ? sub.insertItemBefore(resultList, bookmark, toId)
+                : sub.insertItemAfter(resultList, bookmark, toId);
   return { list: [ ...resultList ] };
 }
 

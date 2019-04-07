@@ -67,6 +67,23 @@ export const insertItemBefore = (bookmarkList, item, toId) => {
   }
 }
 
+// ブックマーク/フォルダを指定IDの直後に挿入
+export const insertItemAfter = (bookmarkList, item, toId) => {
+  let index = bookmarkList.findIndex((e) => e.id == toId);
+  if (index >= 0) {
+    return [
+      ...bookmarkList.slice(0, index + 1),
+      item,
+      ...bookmarkList.slice(index + 1)
+    ];
+  } else {
+    return bookmarkList.map((e) => {
+      e.children = (e.type === 'folder') ? insertItemAfter(e.children, item, toId) : e.children;
+      return e;
+    });
+  }
+}
+
 // ブックマーク/フォルダを指定IDのフォルダ内末尾に挿入
 export const insertItemToFolder = (bookmarkList, item, toId) => {
   let index = bookmarkList.findIndex((e) => e.id == toId);
