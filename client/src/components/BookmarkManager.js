@@ -91,7 +91,7 @@ class BookmarkManagerComponent extends Component {
 
 const Wrapper = styled.div`
   .contents {
-    padding-top: 60px;
+    padding-top: 55px;
     padding-left: 8px;
     padding-right: 8px;
   }
