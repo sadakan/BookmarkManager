@@ -160,13 +160,16 @@ const Wrapper = styled.div`
     position: absolute;
     width: 100%;
     height: 50%;
-    // z-index: -1;
+    display: block;
   }
   .background.upperHalf {
     top: 0px;
   }
   .background.lowerHalf {
     bottom: 0px;
+  }
+  .mouseOver > .background {
+    display: none;
   }
   .dragOverUpper > .background.upperHalf {
     border-top: solid 1px #00f;
