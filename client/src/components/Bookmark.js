@@ -56,14 +56,10 @@ class Bookmark extends Component {
     this.setState({ onDragOverUpper: false });
     this.setState({ onDragOverLower: false });
     console.log('onDrop from[id:' + fromId + ',type:' + fromType + '], to[id' + toId + ',type:bookmark]');
-    if (fromType === 'bookmark') {
-      if (toUpper) {
-        this.props.actions.moveBookmarkToBefore(fromId, toId);
-      } else {
-        this.props.actions.moveBookmarkToAfter(fromId, toId);
-      }
+    if (toUpper) {
+      this.props.actions.moveItemToBefore(fromId, toId);
     } else {
-      this.props.actions.moveFolder(fromId, toId);
+      this.props.actions.moveItemToAfter(fromId, toId);
     }
   }
 
@@ -122,7 +118,7 @@ class Bookmark extends Component {
           onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} >
           <li>
             <a href={url} target="_blank">{name}</a>
-            <DeleteLink bookmarkId={id} hover={onMouseOver ? 'true' : ''} />
+            <DeleteLink id={id} hover={onMouseOver ? 'true' : ''} />
           </li>
           <div className="background upperHalf"
             onDragEnter={this.onDragEnterUpper} onDragOver={this.onDragOverUpper} onDragLeave={this.onDragLeaveUpper} />

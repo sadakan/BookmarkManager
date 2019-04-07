@@ -10,10 +10,10 @@ class DeleteLink extends Component {
     super(props);
   }
 
-  removeBookmark() {
-    const id = this.props.bookmarkId;
+  removeItem() {
+    const id = this.props.id;
     console.log(id);
-    this.props.actions.removeBookmark(id);
+    this.props.actions.removeItem(id);
   }
 
   render() {
@@ -21,7 +21,7 @@ class DeleteLink extends Component {
 
     return (
       <Wrapper hover={hover}>
-        <span className="deleteLink" onClick={() => this.removeBookmark()}>delete</span>
+        <span className="deleteLink" onClick={() => this.removeItem()}>delete</span>
       </Wrapper>
     );
   }

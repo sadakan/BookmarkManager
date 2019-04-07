@@ -67,12 +67,9 @@ class Folder extends Component {
     let fromType = e.dataTransfer.getData('type');
     let toId = e.currentTarget.id;
     console.log('onDrop from[id:' + fromId + ',type:' + fromType + '], to[id' + toId + ',type:folder]');
-    if (fromType === 'bookmark') {
-      this.props.actions.moveBookmarkToFolder(fromId, toId);
-    } else {
-      this.props.actions.moveFolderToFolder(fromId, toId);
-    }
+    this.props.actions.moveItemToFolder(fromId, toId);
   }
+
   onMouseOver(e) {
     this.setState({ onMouseOver: true });
   }
@@ -103,7 +100,7 @@ class Folder extends Component {
           <li>
             <input type="checkbox" id={checkId} checked={open} onChange={this.onCheckChange} className="folderCheck" />
             <label htmlFor={checkId}>{name}</label>
-            <DeleteLink bookmarkId={id} hover={onMouseOver ? 'true' : ''} />
+            <DeleteLink id={id} hover={onMouseOver ? 'true' : ''} />
           </li>
         </div>
         <div className="accordion" open={open}>
