@@ -25,3 +25,9 @@ $ sam init --runtime python3.6 --name api
 ```
 $ sam local start-api
 ```
+
+デプロイ
+```
+$ sam package --template-file template.yaml --s3-bucket <bucketName> --output-template-file packaged.yaml
+$ aws cloudformation deploy --template-file ./packaged.yaml --stack-name <stackName> --capabilities CAPABILITY_IAM
+```
