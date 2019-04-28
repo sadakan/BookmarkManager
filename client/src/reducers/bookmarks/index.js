@@ -1,5 +1,7 @@
 import * as sub from './common';
 
+export const apiUrl = 'http://localhost:3000/bookmark';
+
 export const actionTypes = {
   UPDATE_BOOKMARK_LIST:    'UPDATE_BOOKMARK_LIST',
   ADD_BOOKMARK:            'ADD_BOOKMARK',

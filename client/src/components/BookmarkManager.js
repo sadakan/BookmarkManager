@@ -9,6 +9,7 @@ import * as actions from '../actions';
 import Bookmark from './Bookmark';
 import Folder from './Folder';
 import NavBar from './NavBar';
+import { apiUrl } from '../reducers/bookmarks';
 
 class BookmarkManagerComponent extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class BookmarkManagerComponent extends Component {
   }
 
   getBookmarkList() {
-    axios.get('http://localhost:3000/bookmark')
+    axios.get(apiUrl)
     .then((result) => {
       const bookmarkList = result.data.message.list;
       console.log(bookmarkList);
@@ -54,7 +55,7 @@ class BookmarkManagerComponent extends Component {
     axios({
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      url: 'http://localhost:3000/bookmark',
+      url: apiUrl,
       data: this.props.stateBookmarks
     })
     .then((result) => {

@@ -47,21 +47,24 @@ Resources:
           AssumeRolePolicyDocument:
             Version: "2012-10-17"
             Statement:
-                Effect: Allow
-                Principal:
-                  Service: lambda.amazonaws.com
-                Action: "sts:AssumeRole"
+              Effect: Allow
+              Principal:
+                Service: lambda.amazonaws.com
+              Action: "sts:AssumeRole"
           Policies:
+            - 
               PolicyName: "BookmarkManagePolicy"
               PolicyDocument:
                 Version: "2012-10-17"
                 Statement:
+                  -
                     Effect: "Allow"
-                    "Action": [
-                         "s3:PutObject",
-                         "s3:GetObject"
-                    ]
-                    "Resource": "arn:aws:s3:::bookmarkmanager/*"
+                    Action: "s3:PutObject"
+                    Resource: "arn:aws:s3:::bookmarkmanager/*"
+                  -
+                    Effect: "Allow"
+                    Action: "s3:GetObject"
+                    Resource: "arn:aws:s3:::bookmarkmanager/*"
 
 Outputs:
 
