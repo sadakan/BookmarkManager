@@ -2,26 +2,26 @@
 AWS S3に保持してあるブックマークリストをブラウザ上に表示し、  
 画面上から追加・削除・変更・移動を可能とするツール。  
 
-- client
-  - react
-- api
-  - AWS
-    - S3
-    - api gateway
-    - Lambda
-
 ### client
-起動コマンド
+S3バケットに静的Webサイトホスティング設定を行い、reactで構築したアプリを配置する。  
+
+起動
 ```
 $ yarn run dev
 ```
+ビルド
+```
+$ yarn run build
+```
 
 ### api
-aws-sam-cliにて作成  
+API Gateway経由でLambdaを呼び出し、S3のコンテンツを取得・編集を行う。  
+
+aws-sam-cliにて初期作成  
 ```
 $ sam init --runtime python3.6 --name api  
 ```
-起動コマンド
+起動
 ```
 $ sam local start-api
 ```
