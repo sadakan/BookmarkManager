@@ -36,7 +36,7 @@ def getResponseHeader(httpMethod):
         # CORS対応 preflightに対するレスポンス指定
         headers["Access-Control-Allow-Origin"] = "*"
         headers["Access-Control-Allow-Method"] = "GET, POST, PUT, DELETE"
-        headers["Access-Control-Allow-Headers:"] = "Origin, Authorization, Accept, Content-Type"
+        headers["Access-Control-Allow-Headers"] = "Origin, Authorization, Accept, Content-Type"
         headers["Access-Control-Max-Age"] = "86400"
         headers["Content-Type"] = "text/plain charset=UTF-8"
         headers["Content-Length"] = "0"
